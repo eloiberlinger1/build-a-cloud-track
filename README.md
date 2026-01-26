@@ -53,11 +53,21 @@ Provision a Kubernetes cluster on OpenStack using Terraform \- Infrastructure-as
      - Resources  
      - State  
    - Terraform workflow  
-2. **Provisioning a Kubernetes Cluster** with Terraform using OpenStack APIs  
-3. **Installation and Configuration** of Kubernetes  
+2. **Provision a Virtual Machine** with Terraform using OpenStack APIs  
+3. **Installation and Configuration** of Kubernetes with a tool of your choice
 4. **Core Kubernetes Concepts**  
    - Infrastructure Components: Control Plane and Worker Nodes  
    - Pods, Deployments, Services, Namespaces
+
+### Bonus
+
+**Fully Automated Installation:**
+   - Implement a single command to automatically provision the OpenStack Virtual Machine
+   - And the installation of the Kubernetes cluster
+
+**Two-Node Kubernetes Cluster Setup:**
+   - Expand the installation script to provision two Virtual Machines
+   - And configure them to form a two-node Kubernetes cluster
 
 ## Week 3 – Developing a Platform-as-a-Service (PaaS) Product (on SKE)
 
