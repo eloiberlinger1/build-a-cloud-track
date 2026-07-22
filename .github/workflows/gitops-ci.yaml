@@ -10,8 +10,8 @@ on:
 
 jobs:
   terraform:
-    name: "Terraform Plan & Apply"
-    runs-on: ubuntu-latest
+    name: "Terraform GitOps"
+    runs-on: self-hosted
 
     defaults:
       run:
