@@ -1,0 +1,64 @@
+name: "Terraform OpenStack GitOps"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: "Terraform Plan & Apply"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./part-1/terraform/3-test-gitops
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.0"
+
+      - name: Terraform Format Check
+        id: fmt
+        run: terraform fmt -check
+
+      - name: Terraform Init
+        id: init
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: terraform init
+
+      - name: Terraform Plan
+        id: plan
+        if: github.event_name == 'pull_request'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          TF_VAR_openstack_auth_url: ${{ secrets.OS_AUTH_URL }}
+          TF_VAR_openstack_user_name: ${{ secrets.OS_USERNAME }}
+          TF_VAR_openstack_tenant_name: ${{ secrets.OS_PROJECT_NAME }}
+          TF_VAR_openstack_password: ${{ secrets.OS_PASSWORD }}
+          TF_VAR_openstack_region: ${{ secrets.OS_REGION_NAME }}
+        run: terraform plan -no-color
+        continue-on-error: true
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          TF_VAR_openstack_auth_url: ${{ secrets.OS_AUTH_URL }}
+          TF_VAR_openstack_user_name: ${{ secrets.OS_USERNAME }}
+          TF_VAR_openstack_tenant_name: ${{ secrets.OS_PROJECT_NAME }}
+          TF_VAR_openstack_password: ${{ secrets.OS_PASSWORD }}
+          TF_VAR_openstack_region: ${{ secrets.OS_REGION_NAME }}
+        run: terraform apply -auto-approve
