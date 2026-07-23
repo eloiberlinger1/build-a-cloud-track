@@ -152,7 +152,7 @@ Then I created a basic infrastructure configuration and tried to automate deploy
 
 <img width="1080" height="700" alt="Screenshot 2026-07-23 at 15 12 58" src="https://github.com/user-attachments/assets/44ff96c6-dea7-480c-af35-61ee40c0bee9" />
 
-# K3S deployment
+# Testing K3S deployment
 
 1. Add Ubuntu image
 
@@ -166,7 +166,16 @@ openstack image create "Ubuntu 22.04" \
   --public
 ```
 
-A few seconds after push i directly saw my ram utilization increasing and could see on the Horizon dashboard the new instance
+A few seconds after push i directly saw my ram utilization increasing and could see on the Horizon dashboard the new instance but this. This usage of RAM is caused by the Hypervisor allocating the memory for the VM.
+The cause of that is that i am running Openstack on a VM on my Mac which doesn't allow nested virtualization.
 
 <img width="1187" height="484" alt="Screenshot 2026-07-23 at 15 44 46" src="https://github.com/user-attachments/assets/8ea34efd-fbbb-42e6-87b6-ab01efa926c3" />
 
+# 4 Testing Pulumi
+
+brew install pulumi/tap/pulumi
+pulumi new python
+
+source venv/bin/activate
+
+pip install pulumi_openstack
