@@ -4,28 +4,28 @@ variable "openstack_auth_url" {
 }
 
 variable "openstack_user_name" {
-  type        = string
-  default     = "admin"
+  type    = string
+  default = "admin"
 }
 
 variable "openstack_tenant_name" {
-  type        = string
-  default     = "demo"
+  type    = string
+  default = "demo"
 }
 
 variable "openstack_password" {
-  type        = string
-  sensitive   = true
+  type      = string
+  sensitive = true
 }
 
 variable "openstack_region" {
-  type        = string
-  default     = "RegionOne"
+  type    = string
+  default = "RegionOne"
 }
 
 variable "openstack_insecure" {
-  type        = bool
-  default     = true
+  type    = bool
+  default = true
 }
 
 variable "ssh_public_key" {
