@@ -165,3 +165,8 @@ openstack image create "Ubuntu 22.04" \
   --container-format bare \
   --public
 ```
+
+A few seconds after push i directly saw my ram utilization increasing and could see on the Horizon dashboard the new instance
+
+<img width="1187" height="484" alt="Screenshot 2026-07-23 at 15 44 46" src="https://github.com/user-attachments/assets/8ea34efd-fbbb-42e6-87b6-ab01efa926c3" />
+
