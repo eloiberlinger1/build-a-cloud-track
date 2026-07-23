@@ -19,7 +19,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./part-1/terraform/3-test-gitops
+        working-directory: ./part-1/3-test-gitops
 
     steps:
       - name: Checkout Repository
