@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: terraform-gitops
+  cancel-in-progress: false
+
 jobs:
   terraform:
     name: "Terraform GitOps"
@@ -49,7 +53,6 @@ jobs:
           TF_VAR_openstack_password: ${{ vars.OS_PASSWORD }}
           TF_VAR_openstack_region: ${{ vars.OS_REGION_NAME }}
         run: terraform plan -no-color
-        continue-on-error: true
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
