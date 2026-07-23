@@ -64,7 +64,7 @@ Avoid dumping all your infrastructure code into a single, massive `main.tf` file
 
 # 3. Testing GitOps implementation
 
-I could manually create the bootstrap bucket that stores the `.tfstate` but i saw it is also possible and good practice to use terraform to do this in a /bootstrap subfolder.
+I could manually create the bootstrap bucket that stores the `.tfstate` on the OpenStack cli or Horizon. But i saw it is also possible and good practice to use terraform to do this in a /bootstrap subfolder.
 
 ```
 
@@ -139,9 +139,18 @@ Outputs:
 container_name = "devstack-terraform-state"
 ```
 
-openstack ec2 credentials create
+Then manually for the bootstrap bucket i had to create credentials (this i did it manually though CLI)
+> openstack ec2 credentials create
 
+And run the Terraform apply command with following env variables defined:
 AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY
+Terraform uses S3 as convention to manage buckets for AWS and Openstack which explains why we use env variables with AWS.
 
-terraform uses S3 as convention to manage buckets for AWS and Openstack which explains why we use env variables with AWS.
+
+Then I created a basic infrastructure configuration and tried to automate deployment via GitHub Actions. However, to allow GitHub’s public runners to reach my local OpenStack instance, I needed to expose my local endpoints. I attempted to use a Cloudflare Tunnel, but request modifications (like header rewrites and SSL termination) broke Keystone’s authentication signature checks. Realizing that exposing a local DevStack lab publicly was both overly complex and maybe not so safe even if i was openning the tunnel for a couple of hours just to play arround. I switched to using a self-hosted GitHub Actions runner running on the local machine. This allowed the pipeline to communicate directly with OpenStack over the local network via secure outbound polling, eliminating the need for public endpoints.
+
+<img width="1080" height="700" alt="Screenshot 2026-07-23 at 15 12 58" src="https://github.com/user-attachments/assets/44ff96c6-dea7-480c-af35-61ee40c0bee9" />
+
+
+
